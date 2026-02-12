@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Arctic Hops ❤️</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            overflow: hidden;
+            color: white;
+        }
+
+        /* Arctic Hops Branding */
+        .brand {
+            position: absolute;
+            top: 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            opacity: 0.9;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 50px;
+            border-radius: 20px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            position: relative;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        #question {
+            font-size: 24px;
+            min-height: 80px;
+            margin-bottom: 40px;
+        }
+
+        button {
+            padding: 15px 35px;
+            font-size: 18px;
+            margin: 10px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        #yesBtn {
+            background-color: #ff4d6d;
+            color: white;
+        }
+
+        #noBtn {
+            background-color: #cccccc;
+            color: black;
+            position: absolute;
+        }
+
+        .heart {
+            position: absolute;
+            animation: float 4s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh); opacity: 1; }
+            100% { transform: translateY(-10vh); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="brand">❄️ ARCTIC HOPS ❄️</div>
+
+<div class="container">
+    <div id="question"></div>
+    <button id="yesBtn">Yes ❤️</button>
+    <button id="noBtn">No 🙈</button>
+</div>
+
+<script>
+const questions = [
+"Do you believe love is a choice we make every day?",
+"Do you think two imperfect people can build something perfect together?",
+"Did you ever feel that our meeting wasn’t accidental?",
+"Have I ever felt like home to you?",
+"Do you trust me with your fears?",
+"Do you see me in your future when you think long-term?",
+"Would you stand beside me when things aren’t easy?",
+"Do you believe love grows stronger after storms?",
+"Have I become part of your daily thoughts?",
+"Do you feel understood when you talk to me?",
+"Would you fight for us if the world stood against us?",
+"Do you think emotional connection matters more than everything else?",
+"Have I ever made you feel safe in chaos?",
+"Do you feel peace when we talk?",
+"Can you imagine building a life together slowly?",
+"Do you believe love is patience?",
+"Would you choose me again even after knowing my flaws?",
+"Do you think we make each other better?",
+"Have I changed you in any meaningful way?",
+"Do you feel stronger when I support you?",
+"Would you hold my hand during my weakest moments?",
+"Do you believe commitment is more powerful than temporary feelings?",
+"Have you ever prayed or wished for something like us?",
+"Do you think our bond is rare?",
+"Do you feel emotionally connected beyond attraction?",
+"Would you stay even when things get boring and routine?",
+"Do you value loyalty over excitement?",
+"Have you ever imagined growing old with me?",
+"Do you think love is built, not found?",
+"Would you protect what we have?",
+"Do you feel that silence between us is comfortable?",
+"Have I ever felt like your safe space?",
+"Do you believe we can solve problems together?",
+"Would you forgive me if I genuinely tried to be better?",
+"Do you feel proud of us?",
+"Do you think we bring peace into each other’s lives?",
+"Have you ever feared losing me?",
+"Do you think what we share is deeper than words?",
+"Would you stay during my darkest days?",
+"Do you believe real love requires effort?",
+"Have I ever been your calm after a storm?",
+"Do you think timing brought us together for a reason?",
+"Would you build dreams with me, not just moments?",
+"Do you feel emotionally secure with me?",
+"Have we grown stronger through misunderstandings?",
+"Do you think we are becoming partners, not just lovers?",
+"Would you choose long-term happiness over temporary comfort?",
+"Do you believe in us even when doubts whisper?",
+"Have I become part of your heart permanently?",
+"So… will you choose me — not just today, but every day? ❤️"
+];
+
+let currentQuestion = 0;
+let yesSize = 1;
+let noSize = 1;
+
+const questionElement = document.getElementById("question");
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const container = document.querySelector(".container");
+
+/* Typing Animation */
+function typeQuestion(text, i = 0) {
+    if (i === 0) questionElement.innerHTML = "";
+    if (i < text.length) {
+        questionElement.innerHTML += text.charAt(i);
+        setTimeout(() => typeQuestion(text, i + 1), 35);
+    }
+}
+
+typeQuestion(questions[currentQuestion]);
+
+yesBtn.addEventListener("click", () => {
+    currentQuestion++;
+
+    if (currentQuestion >= questions.length) {
+        questionElement.innerHTML = "You chose love. And that means everything. ❤️";
+        yesBtn.style.display = "none";
+        noBtn.style.display = "none";
+        startHearts();
+        return;
+    }
+
+    typeQuestion(questions[currentQuestion]);
+
+    yesSize += 0.08;
+    yesBtn.style.transform = "scale(" + yesSize + ")";
+
+    noSize -= 0.05;
+    if (noSize < 0.2) noSize = 0.2;
+    noBtn.style.transform = "scale(" + noSize + ")";
+});
+
+/* No Button Runs Away */
+noBtn.addEventListener("mouseover", moveNo);
+noBtn.addEventListener("click", moveNo);
+
+function moveNo() {
+    const rect = container.getBoundingClientRect();
+    const maxX = rect.width - noBtn.offsetWidth;
+    const maxY = rect.height - noBtn.offsetHeight;
+
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+}
+
+/* Floating Hearts */
+function startHearts() {
+    setInterval(() => {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = Math.random() * 20 + 20 + "px";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 4000);
+    }, 300);
+}
+</script>
+
+</body>
+</html>
